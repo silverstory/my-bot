@@ -12,9 +12,9 @@
     padding: 5px 10px 10px 10px;
 
     display: flex;
-    width: 40px;
+    width: 62px; /* 40 */
     justify-content: space-between;
-    height: 20px;
+    height: 35px; /* 20 */
     align-items: flex-end;
   }
   .ball {

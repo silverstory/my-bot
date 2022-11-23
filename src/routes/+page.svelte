@@ -12,7 +12,7 @@
     return time;
   }
 
-  const text = "Hi GAGO  KA ANIMAL KA INA MO!";
+  const text = "Hi! I'm Jane D. How can I help you today?";
 
   const readtime = readingTime(text);
   const time = readtime < 2000 ? 100 : 200;
