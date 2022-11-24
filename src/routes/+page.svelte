@@ -6,6 +6,8 @@
   import { onMount } from "svelte";
   import { afterUpdate, tick } from "svelte";
 
+  let userchat = '';
+
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -58,7 +60,8 @@
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
     const readtime = readingTime(text);
-    const time = readtime < 2000 ? 100 : 200;
+    // const time = readtime < 2000 ? 100 : 200;
+    const time = readtime < 2000 ? 300 : 400;
 
     current = [
       ...current,
@@ -74,28 +77,54 @@
     popchat();
   }
 
+  function handleKeydown(event) {
+		if (event.key === 'Enter') {
+			const text = event.target.value;
+			if (!text) return;
+
+      userchat = text;
+
+      handleUser();
+
+      event.target.value = '';
+    }
+  }
+
   async function handleUser() {
-    const text =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
+
+    const text = userchat;
+
+    // const text =
+    //   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
     const readtime = readingTime(text);
     const time = readtime < 2000 ? 100 : 200;
 
-    current = [
-      ...current,
-      {
+    // current = [
+    //   ...current,
+    //   {
+    //     text: text,
+    //     who: "you",
+    //     ready: false,
+    //     isolateDelay: time,
+    //   },
+    // ];
+
+    current = current.concat({
         text: text,
         who: "you",
         ready: false,
         isolateDelay: time,
-      },
-    ];
+      });
+
+    userchat = '';
+
     displacement = 0;
     active_index = current.length - 1;
 
     popchat();
 
-    await sleep(3500);
+    await sleep(1600);
 
     handleBot();
 
@@ -213,7 +242,6 @@
     {#each current as { text, who, ready, isolateDelay }}
       <ChatBox {who} {text} {ready} {isolateDelay} />
     {/each}
-    <button on:click={handleUser}>me</button>
   </div>
   <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
     <div class="relative flex">
@@ -267,6 +295,8 @@
         class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
       /> -->
       <input
+        on:keydown={handleKeydown}
+        bind:value={userchat}
         type="text"
         placeholder="Write your message!"
         class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 pr-28 bg-gray-200 rounded-md py-3"
@@ -293,6 +323,7 @@
                 </svg>
              </button>              -->
         <button
+          on:click={handleUser}
           type="button"
           class="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none"
         >
