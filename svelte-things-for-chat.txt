@@ -1,0 +1,19 @@
+
+for loading local storage and sharing variables within components
+https://svelte.dev/tutorial/context-api
+
+
+share code within same components
+https://svelte.dev/tutorial/sharing-code
+https://svelte.dev/tutorial/module-exports
+
+
+
+components
+https://svelte.dev/tutorial/svelte-component
+
+baka pwede optional slots
+https://svelte.dev/tutorial/optional-slots
+
+
+https://svelte.dev/tutorial/component-this

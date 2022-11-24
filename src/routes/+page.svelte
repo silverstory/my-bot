@@ -2,8 +2,13 @@
 <script>
   import ChatBox from "../shared/ChatBox.svelte";
   import BouncingDots from "../shared/BouncingDots.svelte";
+  import Home from "../shared/testdrive/Home.svelte";
   import { onMount } from "svelte";
   import { afterUpdate, tick } from "svelte";
+
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   function readingTime(text) {
     const wps = 225 / 60;
@@ -48,7 +53,7 @@
     };
   });
 
-  function popnew() {
+  function handleBot() {
     const text =
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
@@ -67,6 +72,33 @@
     displacement = 0;
     active_index = current.length - 1;
     popchat();
+  }
+
+  async function handleUser() {
+    const text =
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
+
+    const readtime = readingTime(text);
+    const time = readtime < 2000 ? 100 : 200;
+
+    current = [
+      ...current,
+      {
+        text: text,
+        who: "you",
+        ready: false,
+        isolateDelay: time,
+      },
+    ];
+    displacement = 0;
+    active_index = current.length - 1;
+
+    popchat();
+
+    await sleep(3500);
+
+    handleBot();
+
   }
 
 
@@ -181,7 +213,7 @@
     {#each current as { text, who, ready, isolateDelay }}
       <ChatBox {who} {text} {ready} {isolateDelay} />
     {/each}
-    <button on:click={popnew}>pop</button>
+    <button on:click={handleUser}>me</button>
   </div>
   <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
     <div class="relative flex">
@@ -193,7 +225,16 @@
                 </svg>
              </button>
           </span> -->
+      <!-- file attach big button -->
       <span class="absolute inset-y-0 flex items-center">
+        <button type="button" class="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 text-gray-600">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+          </svg>
+        </button>
+      </span>
+      <!-- camera button - before -->
+      <!-- <span class="absolute inset-y-0 flex items-center">
         <button
           type="button"
           class="inline-flex items-center justify-center rounded-full h-12 w-12 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none"
@@ -219,7 +260,7 @@
             />
           </svg>
         </button>
-      </span>
+      </span> -->
       <!-- <input
         type="text"
         placeholder="Write your message!"
@@ -271,7 +312,9 @@
     </div>
   </div>
 </div>
-
+<div class="flex flex-col">
+<Home />
+</div>
 <style>
   .scrollbar-w-2::-webkit-scrollbar {
     width: 0.25rem;
