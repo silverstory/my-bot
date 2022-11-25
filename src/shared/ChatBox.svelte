@@ -17,10 +17,11 @@
 
   const height = spring(35);
   const width = spring(60);
-  const height1 = spring(15);
+  const height1 = spring(35);
   const width1 = spring(60);
 
-  $: _ready && width.set(300) && height.set(el + 30);
+  // $: _ready && width.set(300) && height.set(el + 30);
+  $: _ready && width.set(300) && height.set(el + 20);
   $: _ready && width1.set(300) && height1.set(el1 + 10);
 
   onMount(() => {
@@ -33,7 +34,8 @@
   });
 </script>
 
-<div style="height: {el + 60 || 35}px">
+<!-- <div style="height: {el + 60 || 35}px"> -->
+<div style="height: {el + 60 || 25}px">
   <div
     in:fly={{
       y: 50,
@@ -95,7 +97,8 @@
     font-family: helvetica;
     background-color: #eee;
     border-radius: 25px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
+    margin-bottom: 20px;
     font-family: helvetica;
   }
 
@@ -105,7 +108,8 @@
     font-family: helvetica;
     background-color: #eee;
     border-radius: 50px;
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
+    margin-bottom: 10px;
     font-family: helvetica;
   }
 

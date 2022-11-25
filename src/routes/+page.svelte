@@ -9,6 +9,10 @@
 
   let userchat = '';
 
+  let userchatInput;
+
+  let lockinput = true;
+
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
@@ -44,6 +48,8 @@
       requestAnimationFrame(popchat);
     } else {
       current[active_index].ready = true;
+      lockinput = false;
+      userchatInput.focus();
     }
   };
 
@@ -84,6 +90,7 @@
 
   function handleKeydown(event) {
 		if (event.key === 'Enter') {
+      lockinput = true;
 			const text = event.target.value;
 			if (!text) return;
 
@@ -96,6 +103,8 @@
   }
 
   async function handleUser() {
+
+    lockinput = true;
 
     const text = userchat;
 
@@ -319,8 +328,10 @@
         class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 bg-gray-200 rounded-md py-3"
       /> -->
       <input
+        disabled={lockinput}
         on:keydown={handleKeydown}
         bind:value={userchat}
+        bind:this={userchatInput}
         type="text"
         placeholder="Write your message!"
         class="w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-12 pr-28 bg-gray-200 rounded-md py-3"
