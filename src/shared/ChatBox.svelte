@@ -8,15 +8,20 @@
   export let text = "";
   export let ready = false;
   export let isolateDelay;
+  export let widget = '';
 
   $: _ready = who === "you" ? true : ready;
 
   let el;
+  let el1;
 
   const height = spring(35);
   const width = spring(60);
+  const height1 = spring(15);
+  const width1 = spring(60);
 
   $: _ready && width.set(300) && height.set(el + 30);
+  $: _ready && width1.set(300) && height1.set(el1 + 10);
 
   onMount(() => {
     setTimeout(() => {
@@ -53,13 +58,53 @@
   </div>
 </div>
 
+{#if $$slots.widgets}
+  {#if widget !== ''}
+    <div style="height: {el1 +40 || 15}px">
+      <div
+        in:fly={{
+          y: 50,
+          opacity: 0,
+          duration: 250,
+          delay: who === "you" ? 1000 : 200,
+        }}
+        class="widget {who}"
+        class:ready={_ready}
+        style="width: {$width1}px; height: {$height1}px"
+      >
+        <div class="text-box" class:show={_ready} bind:clientHeight={el1}>
+          <slot name="widgets"></slot>
+        </div>
+      </div>
+    </div>
+  {/if}
+{/if}
+
 <style>
+
+  .has-options::after {
+		content: '';
+		background-color: white;
+		height: 0px;
+		width: 0px;
+	}
+
   .box {
     background-color: #eee;
     border-radius: 5px;
     font-family: helvetica;
     background-color: #eee;
+    border-radius: 25px;
+    margin-bottom: 30px;
+    font-family: helvetica;
+  }
+
+  .widget {
+    background-color: #eee;
     border-radius: 5px;
+    font-family: helvetica;
+    background-color: #eee;
+    border-radius: 50px;
     margin-bottom: 30px;
     font-family: helvetica;
   }

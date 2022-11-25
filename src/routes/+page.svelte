@@ -5,6 +5,7 @@
   import Home from "../shared/testdrive/Home.svelte";
   import { onMount } from "svelte";
   import { afterUpdate, tick } from "svelte";
+  import Intro from "../shared/widgets/Intro.svelte";
 
   let userchat = '';
 
@@ -19,7 +20,7 @@
     return time;
   }
 
-  const text = "Hi! I'm Jane D. How can I help you today?";
+  const text = "Hi! I'm Jane D. The 8888 virtual assistant. How can I help you today?";
 
   const readtime = readingTime(text);
   const time = readtime < 2000 ? 100 : 200;
@@ -30,6 +31,7 @@
       who: "them",
       ready: false,
       isolateDelay: time,
+      widget: 'intro',
     },
   ];
 
@@ -63,6 +65,8 @@
     // const time = readtime < 2000 ? 100 : 200;
     const time = readtime < 2000 ? 300 : 400;
 
+    // determine widget to render here
+
     current = [
       ...current,
       {
@@ -70,6 +74,7 @@
         who: "them",
         ready: false,
         isolateDelay: time,
+        widget: '',
       },
     ];
     displacement = 0;
@@ -149,6 +154,17 @@
     node.scroll({ top: node.scrollHeight, behavior: "smooth" });
   };
   // end scroll to bottom
+
+
+  // options widgets handler functions
+	function handleIntroAssistance(event) {
+		alert(event.detail.text);
+	}
+	function handleIntroComplaint(event) {
+		alert(event.detail.text);
+	}
+  // options widgets handers
+
 </script>
 
 <div class="flex-1 p:2 sm:p-6 justify-between flex flex-col h-screen">
@@ -239,8 +255,16 @@
     bind:this={element}
     class="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
   >
-    {#each current as { text, who, ready, isolateDelay }}
-      <ChatBox {who} {text} {ready} {isolateDelay} />
+    {#each current as { text, who, ready, isolateDelay, widget }}
+      <ChatBox {who} {text} {ready} {isolateDelay} {widget} >
+        <div slot="widgets">
+          {#if widget}
+            {#if widget === 'intro'}
+            <Intro on:introassistance={handleIntroAssistance} on:introcomplaint={handleIntroComplaint} />
+            {/if}
+          {/if}
+        </div>
+      </ChatBox>
     {/each}
   </div>
   <div class="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
@@ -343,9 +367,11 @@
     </div>
   </div>
 </div>
+<!--
 <div class="flex flex-col">
-<Home />
+  <Home />
 </div>
+-->
 <style>
   .scrollbar-w-2::-webkit-scrollbar {
     width: 0.25rem;
