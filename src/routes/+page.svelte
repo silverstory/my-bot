@@ -1,3 +1,7 @@
+<script context="module">
+  import Device from 'svelte-device-info'
+</script>
+
 <!-- component -->
 <script>
   import ChatBox from "../shared/ChatBox.svelte";
@@ -49,7 +53,15 @@
     } else {
       current[active_index].ready = true;
       lockinput = false;
-      userchatInput.focus();
+
+      console.log('this device is ' + (Device.isMobile ? '' : 'not') + ' mobile')
+  
+      switch (true) {
+        case Device.isPhone:  console.log('this device is a smartphone'); break
+        case Device.isTablet: console.log('this device is a tablet');     break
+        default:              userchatInput.focus() // console.log('this device is neither a smartphone nor a tablet')
+      }
+
     }
   };
 
