@@ -11,6 +11,15 @@
   import { afterUpdate, tick } from "svelte";
   import Intro from "../shared/widgets/Intro.svelte";
 
+  const BotMessage = {
+    Intro: "Hi! I'm Jane D. The 8888 virtual assistant. How can I help you today?",
+    ImJustaBot: "Sorry, I don't understand that. I'm just a bot.",
+    FirstName: "Please enter your first name",
+    LastName: "Enter your lastname",
+  };
+
+  let lastbotmessage = BotMessage.Intro;
+
   let userchat = '';
 
   let userchatInput;
@@ -28,7 +37,7 @@
     return time;
   }
 
-  const text = "Hi! I'm Jane D. The 8888 virtual assistant. How can I help you today?";
+  const text = BotMessage.Intro;
 
   const readtime = readingTime(text);
   const time = readtime < 2000 ? 100 : 200;
@@ -75,9 +84,11 @@
     };
   });
 
-  function handleBot() {
-    const text =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
+  function handleBot(reply) {
+    // const text =
+    //   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
+
+    const text = reply;
 
     const readtime = readingTime(text);
     // const time = readtime < 2000 ? 100 : 200;
@@ -152,7 +163,19 @@
 
     await sleep(1600);
 
-    handleBot();
+    let reply = '';
+
+    switch (lastbotmessage) {
+        case BotMessage.Intro     :  {
+          reply = BotMessage.ImJustaBot;
+          break;
+        }
+        case BotMessage.FirstName : console.log('first name');     break
+        case BotMessage.LastName  : console.log('last name');     break
+        default:              console.log('default');     break
+      }
+      
+    handleBot(reply);
 
   }
 
